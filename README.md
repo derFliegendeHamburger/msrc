@@ -1,4 +1,21 @@
 # MSRC - Multi Sensor for RC - Smartport, Frsky D, XBUS, SRXL, IBUS
+## functional changes
++ correct #cells autodetection for normal and HV lipos
++ correct EscA value from HW telemetry
++ more filtering of invalid telemetry frames
+## modifications against original project (@2021-05-07, svn#567, 520 commits) 
+- modified cells' voltage thresholds
+- modified autodetection for rawCurrentOffset_
+- tuned parameter ESCHW4_DIFFAMP_GAIN 16.9
+- more sanity checks on incoming telemetry data
+
+
+## beware
+The settings in config.h are tailored towards HW plat V4 80A esc and frsky smartport. Implementation is with arduino 328p, 8MHz, 3.3V.
+
+(- also disabled some CASTLE code in smartport per #if 0 in order to fit debug code into arduino)
+
+## original description
 
 This is a DIY project to send sensors telemetry for a fraction of the weight and cost of the stock sensors. It adds support for several ESC telemetry protocols
 
@@ -489,6 +506,6 @@ Or open an [Issue](https://github.com/dgatf/msrc/issues) in Github
 
 
 ## 10. Acknowledgements
-
++ DanielGA (Helifreak)
 - Commodore8888 (Helifreak)
 - MikeJ (Helifreak)

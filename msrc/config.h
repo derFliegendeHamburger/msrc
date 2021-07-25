@@ -6,6 +6,10 @@
 #define VERSION_MINOR 8
 #define VERSION_PATCH 0
 
+// sanity filters: values larger than this indicate erroneous esc data; will discard entire frame (atm for HW4 only)
+#define FILTER_MAX_RPM 100000 //200000
+#define FILTER_MAX_VOLTAGE 27 //100
+#define FILTER_MAX_TEMP 110
 
 // Select RX protocol
 #define RX_PROTOCOL RX_SMARTPORT // RX_SMARTPORT, RX_XBUS, RX_SRXL, RX_FRSKY, RX_IBUS
@@ -23,7 +27,7 @@
 #define GPS_BAUD_RATE 9600
 
 // HW signature
-#define ESC_SIGNATURE
+//  #define ESC_SIGNATURE
 
 // Pins & Serial ports
 
@@ -139,7 +143,7 @@
 // --------------------------- Do not change config below if using lua script ---------------------------
 
 // Select sensors
-#define CONFIG_ESC_PROTOCOL PROTOCOL_NONE // PROTOCOL_NONE, PROTOCOL_HW_V3, PROTOCOL_HW_V4_LV, PROTOCOL_HW_V4_HV, PROTOCOL_HW_V5_LV, PROTOCOL_HW_V5_HV, PROTOCOL_PWM, PROTOCOL_CASTLE, PROTOCOL_KONTRONIK
+#define CONFIG_ESC_PROTOCOL PROTOCOL_HW_V4_LV // PROTOCOL_NONE, PROTOCOL_HW_V3, PROTOCOL_HW_V4_LV, PROTOCOL_HW_V4_HV, PROTOCOL_HW_V5_LV, PROTOCOL_HW_V5_HV, PROTOCOL_PWM, PROTOCOL_CASTLE, PROTOCOL_KONTRONIK
 #define CONFIG_AIRSPEED false
 #define CONFIG_GPS false
 #define CONFIG_VOLTAGE1 false
@@ -152,18 +156,18 @@
 #define CONFIG_I2C1_ADDRESS 0
 
 // Refresh rate in 0.1s (1 = 100ms)
-#define CONFIG_REFRESH_RPM 10
-#define CONFIG_REFRESH_VOLT 10
-#define CONFIG_REFRESH_CURR 10
-#define CONFIG_REFRESH_TEMP 10
-#define CONFIG_REFRESH_DEF 10
+#define CONFIG_REFRESH_RPM 8
+#define CONFIG_REFRESH_VOLT 11
+#define CONFIG_REFRESH_CURR 9
+#define CONFIG_REFRESH_TEMP 15
+#define CONFIG_REFRESH_DEF 15
 
 // Averaging elements
-#define CONFIG_AVERAGING_ELEMENTS_RPM 3
+#define CONFIG_AVERAGING_ELEMENTS_RPM 5
 #define CONFIG_AVERAGING_ELEMENTS_VOLT 3
 #define CONFIG_AVERAGING_ELEMENTS_CURR 3
-#define CONFIG_AVERAGING_ELEMENTS_TEMP 3
-#define CONFIG_AVERAGING_ELEMENTS_DEF 3
+#define CONFIG_AVERAGING_ELEMENTS_TEMP 7
+#define CONFIG_AVERAGING_ELEMENTS_DEF 7
 
 //------------------------- END OF CONFIG -----------------------------//
 

@@ -422,6 +422,7 @@ void Smartport::setConfig(Config &config)
         addSensor(sensorP);
 #endif
     }
+#if 0
     if (config.protocol == PROTOCOL_CASTLE)
     {
         Sensor *sensorP;
@@ -489,7 +490,8 @@ void Smartport::setConfig(Config &config)
         sensorP = new Sensor(AIR_SPEED_FIRST_ID, pressure->valueP(), config.refresh.volt, pressure);
         addSensor(sensorP);
     }
-    if (config.voltage1 == true)
+#endif
+if (config.voltage1 == true)
     {
         Sensor *sensorP;
         Voltage *voltage;

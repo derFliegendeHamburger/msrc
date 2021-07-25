@@ -4,7 +4,7 @@ Voltage::Voltage(uint8_t pin, uint8_t alpha) : pin_(pin), alpha_(alpha) {}
 
 float Voltage::readVoltage()
 {
-    return analogRead(pin_) * BOARD_VCC / 1024.0;
+    return ((float)analogRead(pin_)); //zz * BOARD_VCC / 1024.0;
 }
 
 void Voltage::update()

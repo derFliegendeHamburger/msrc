@@ -45,18 +45,33 @@ void EscHW4::update()
                     float rpm = (uint32_t)data[7] << 16 | (uint16_t)data[8] << 8 | data[9];
                     if (thr_ > 1024 || // try to filter invalid data frames
                         pwm_ > 1024 ||
-                        rpm > 200000 ||
+                        rpm > FILTER_MAX_RPM ||
                         data[10] & 0xF0 || // for sensors, ADC is 12bits- > higher bits must be 0
                         data[12] & 0xF0 ||
                         data[14] & 0xF0 ||
                         data[16] & 0xF0)
-                        return;
-                    if (thr_ == 0)
-                        rawCurrentOffset_ = (uint16_t)data[12] << 8 | data[13];
+                    {
+#if defined(DEBUG_ESC_HW_V4) || defined(DEBUG_ESC)
+                      DEBUG_SERIAL.println(" INVALID FRAME FILTERED ");
+#endif
+                      return;
+                    }
+                    float rawCur = (uint16_t)data[12] << 8 | data[13];
+                    if ( (rawCurrentOffset_ == -1) && (rawCur > 0 ) )
+                        rawCurrentOffset_ = rawCur;
                     float voltage = calcVolt((uint16_t)data[10] << 8 | data[11]);
-                    float current = calcCurr((uint16_t)data[12] << 8 | data[13]);
+                    float current = calcCurr(rawCur);
                     float tempFET = calcTemp((uint16_t)data[14] << 8 | data[15]);
                     float tempBEC = calcTemp((uint16_t)data[16] << 8 | data[17]);
+                   if (voltage > FILTER_MAX_VOLTAGE || 
+                       tempFET > FILTER_MAX_TEMP || 
+                       tempBEC > FILTER_MAX_TEMP )  // try to filter invalid data frames
+                    {
+#if defined(DEBUG_ESC_HW_V4) || defined(DEBUG_ESC)
+                      DEBUG_SERIAL.println(" INVALID FRAME FILTERED ");
+#endif
+                      return;
+                    }
                     rpm_ = calcAverage(alphaRpm_ / 100.0F, rpm_, rpm);
                     voltage_ = calcAverage(alphaVolt_ / 100.0F, voltage_, voltage);
                     current_ = calcAverage(alphaCurr_ / 100.0F, current_, current);
@@ -75,6 +90,8 @@ void EscHW4::update()
                         (uint32_t)data[0] << 16 | (uint16_t)data[1] << 8 | data[2];
                     DEBUG_SERIAL.print("N:");
                     DEBUG_SERIAL.print(pn);
+                    DEBUG_SERIAL.print(" t:");
+                    DEBUG_SERIAL.print(thr_);
                     DEBUG_SERIAL.print(" R:");
                     DEBUG_SERIAL.print(rpm);
                     DEBUG_SERIAL.print(" V:");
@@ -86,7 +103,11 @@ void EscHW4::update()
                     DEBUG_SERIAL.print(" TB:");
                     DEBUG_SERIAL.print(tempBEC);
                     DEBUG_SERIAL.print(" VC:");
-                    DEBUG_SERIAL.println(cellVoltage_);
+                    DEBUG_SERIAL.print(cellVoltage_);
+                    DEBUG_SERIAL.print("  rco:");
+                    DEBUG_SERIAL.print( (uint16_t)data[12] << 8 | data[13] );
+                    DEBUG_SERIAL.print(" ");
+                    DEBUG_SERIAL.println(rawCurrentOffset_);
 #endif
                 }
             }
@@ -121,9 +142,10 @@ float EscHW4::calcTemp(uint16_t tempRaw)
 
 float EscHW4::calcCurr(uint16_t currentRaw)
 {
-    if (currentRaw - rawCurrentOffset_ < 0)
+    if ( (currentRaw - rawCurrentOffset_ < 0) || (rawCurrentOffset_ < 0) )
         return 0;
     return (currentRaw - rawCurrentOffset_) * ESCHW4_V_REF / (ESCHW4_DIFFAMP_GAIN * ESCHW4_DIFFAMP_SHUNT * ESCHW4_ADC_RES);
+    //return 0.036 * (float)(currentRaw - rawCurrentOffset_); //* ESCHW4_V_REF / (ESCHW4_DIFFAMP_GAIN * ESCHW4_DIFFAMP_SHUNT * ESCHW4_ADC_RES);
 }
 
 uint16_t *EscHW4::thrP()

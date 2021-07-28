@@ -27,7 +27,7 @@
 #define GPS_BAUD_RATE 9600
 
 // HW signature
-//  #define ESC_SIGNATURE
+// #define ESC_SIGNATURE
 
 // Pins & Serial ports
 

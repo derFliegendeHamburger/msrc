@@ -8,7 +8,8 @@
 class Sensor : public FormatData
 {
 protected:
-    uint16_t timestamp_ = 0, dataId_, frameId_ = 0x10;
+    uint32_t timestamp_ = 0;
+    uint16_t dataId_, frameId_ = 0x10;
     float *valueLP_;
     uint32_t value_;
     uint8_t refresh_;
@@ -18,8 +19,8 @@ public:
     Sensor(uint16_t dataId, float *valueLP, uint8_t refresh, AbstractDevice *deviceP);
     virtual ~Sensor();
     Sensor *nextP = NULL;
-    uint16_t timestamp();
-    void setTimestamp(uint16_t dataId);
+    uint32_t timestamp();
+    void setTimestamp(uint32_t timestamp);
     uint16_t dataId();
     uint16_t frameId();
     uint8_t refresh();
@@ -70,7 +71,8 @@ public:
 class Sensord : public FormatData
 {
 protected:
-    uint16_t timestamp_ = 0, value_;
+    uint32_t timestamp_ = 0;
+	uint16_t value_;
     uint8_t dataId_;
     float *valueP_;
     uint8_t refresh_;
@@ -80,8 +82,8 @@ public:
     Sensord(uint8_t dataId, float *value, uint8_t refresh, AbstractDevice *deviceP);
     ~Sensord();
     Sensord *nextP = NULL;
-    uint16_t timestamp();
-    void setTimestamp(uint16_t dataId);
+    uint32_t timestamp();
+    void setTimestamp(uint32_t timestamp);
     uint8_t dataId();
     uint8_t refresh();
     void update();

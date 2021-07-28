@@ -141,9 +141,9 @@ void Ibus::update()
     static uint8_t address = 0;
     if (true)
     {
-        static uint16_t ts = 0;
+        static uint32_t ts = 0;
         uint8_t packetType = IBUS_RECEIVED_NONE;
-        if ((uint16_t)millis() - ts > 100)
+        if ((uint32_t)millis() - ts > 100)
         {
             packetType = IBUS_RECEIVED_POLL;
             address++;

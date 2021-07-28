@@ -24,12 +24,12 @@ uint32_t Sensor::valueFormatted()
     return formatData(dataId_, *valueLP_);
 }
 
-uint16_t Sensor::timestamp()
+uint32_t Sensor::timestamp()
 {
     return timestamp_;
 }
 
-void Sensor::setTimestamp(uint16_t timestamp)
+void Sensor::setTimestamp(uint32_t timestamp)
 {
     timestamp_ = timestamp;
 }
@@ -116,12 +116,12 @@ uint16_t Sensord::valueFormatted()
     return formatData(dataId_, *valueP_);
 }
 
-uint16_t Sensord::timestamp()
+uint32_t Sensord::timestamp()
 {
     return timestamp_;
 }
 
-void Sensord::setTimestamp(uint16_t timestamp)
+void Sensord::setTimestamp(uint32_t timestamp)
 {
     timestamp_ = timestamp;
 }

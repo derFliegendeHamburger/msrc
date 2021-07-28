@@ -197,8 +197,8 @@ uint8_t Smartport::read(uint8_t &sensorId, uint8_t &frameId, uint16_t &dataId, u
         uint8_t data[9];
         boolean header = false;
         uint8_t cont = 0;
-        uint16_t tsRead = millis();
-        while ((uint16_t)millis() - tsRead < SMARTPORT_TIMEOUT)
+        uint32_t tsRead = millis();
+        while ((uint32_t)millis() - tsRead < SMARTPORT_TIMEOUT)
         {
             if (serial_.available())
             {
@@ -323,11 +323,11 @@ void Smartport::update()
             {
                 static Sensor *spSensorP = sensorP; // loop sensors until correct timestamp or 1 sensors cycle
                 Sensor *initialSensorP = spSensorP;
-                while (((uint16_t)((uint16_t)millis() - spSensorP->timestamp()) <= (uint16_t)spSensorP->refresh() * 100) && spSensorP->nextP != initialSensorP)
+                while (((uint16_t)((uint32_t)millis() - spSensorP->timestamp()) <= (uint16_t)spSensorP->refresh() * 100) && spSensorP->nextP != initialSensorP)
                 {
                     spSensorP = spSensorP->nextP;
                 }
-                if ((uint16_t)((uint16_t)millis() - spSensorP->timestamp()) >= (uint16_t)spSensorP->refresh() * 100)
+                if ((uint16_t)((uint32_t)millis() - spSensorP->timestamp()) >= (uint16_t)spSensorP->refresh() * 100)
                 {
                     sendData(spSensorP->frameId(), spSensorP->dataId(), spSensorP->valueFormatted());
 #ifdef DEBUG
@@ -373,6 +373,7 @@ void Smartport::setConfig(Config &config)
 {
     deleteSensors();
     setSensorId(idToCrc(config.sensorId));
+#if 0
     if (config.protocol == PROTOCOL_PWM)
     {
         Sensor *sensorP;
@@ -394,6 +395,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorDouble(ESC_RPM_CONS_FIRST_ID, esc->rpmP(), NULL, config.refresh.rpm, esc);
         addSensor(sensorP);
     }
+#endif
     if (config.protocol >= PROTOCOL_HW_V4_LV && config.protocol <= PROTOCOL_HW_V5_HV)
     {
         Sensor *sensorP;
@@ -542,6 +544,7 @@ if (config.voltage1 == true)
         sensorP = new Sensor(ALT_FIRST_ID, bmp->altitudeP(), 10, bmp);
         addSensor(sensorP);
     }
+
 }
 
 void Smartport::processPacket(uint8_t frameId, uint16_t dataId, uint32_t value)

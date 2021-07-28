@@ -11,7 +11,7 @@
 #define ESCHW4_NTC_BETA 3950.0
 #define ESCHW4_NTC_R1 10000.0
 #define ESCHW4_NTC_R_REF 47000.0
-#define ESCHW4_DIFFAMP_GAIN 16.9 //zz 16.9 for logo402 //13.6 for logo400
+#define ESCHW4_DIFFAMP_GAIN 16.9 // use 16.9 for logo402 //13.6 for logo400
 #define ESCHW4_DIFFAMP_SHUNT (0.25 / 1000)
 #define ESCHW4_V_REF 3.3
 #define ESCHW4_ADC_RES 4096.0

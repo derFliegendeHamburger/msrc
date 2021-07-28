@@ -4,7 +4,7 @@ EscHW3::EscHW3(Stream &serial, uint8_t alphaRpm) : alphaRpm_(alphaRpm), serial_(
 
 void EscHW3::update()
 {
-    static uint16_t tsEsc_ = 0;
+    static uint32_t tsEsc_ = 0;
     while (serial_.available() >= 10)
     {
         if (serial_.read() == 0x9B)
@@ -32,7 +32,7 @@ void EscHW3::update()
             }
         }
     }
-    if ((uint16_t)millis() - tsEsc_ > 150)
+    if ((uint32_t)millis() - tsEsc_ > 150)
     {
         pwm_ = 0;
         thr_ = 0;

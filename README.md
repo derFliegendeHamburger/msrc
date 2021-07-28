@@ -8,6 +8,7 @@
 - modified autodetection for rawCurrentOffset_
 - tuned parameter ESCHW4_DIFFAMP_GAIN 16.9
 - more sanity checks on incoming telemetry data
+- millis() returns uint32_t : change everything related from uint16_t to uint32_t
 
 
 ## beware

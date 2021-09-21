@@ -1,3 +1,6 @@
+# outdated again !
+The author of the original project (dgatf aka DanielGA) has incorporated most of my modifications into his code and continues improving it. In most any cases you are likely better off with his code.
+
 # MSRC - Multi Sensor for RC - Smartport, Frsky D, XBUS, SRXL, IBUS
 ## functional changes
 + correct #cells autodetection for normal and HV lipos
@@ -9,7 +12,6 @@
 - tuned parameter ESCHW4_DIFFAMP_GAIN 16.9
 - more sanity checks on incoming telemetry data
 - millis() returns uint32_t : change everything related from uint16_t to uint32_t
-
 
 ## beware
 The settings in config.h are tailored towards HW plat V4 80A esc and frsky smartport. Implementation is with arduino 328p, 8MHz, 3.3V.
